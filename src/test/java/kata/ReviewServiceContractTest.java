@@ -42,7 +42,7 @@ public class ReviewServiceContractTest {
     @Test
     @PactVerification("review_service")
     public void runTest() {
-        assertEquals(new ReviewService("http://localhost:8080").getRatings(),
-                Arrays.asList(new Rating(3), new Rating(4)));
+        assertEquals(Arrays.asList(new Rating(3), new Rating(4)),
+                new ReviewService("http://localhost:8080").getRatings());
     }
 }

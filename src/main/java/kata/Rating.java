@@ -4,20 +4,20 @@ package kata;
  * Created by twer on 7/15/17.
  */
 public class Rating {
-    private int fiveStarRating;
+    private int rating;
 
     public Rating() {
     }
 
-    public Rating(int fiveStarRating) {
-        this.fiveStarRating = fiveStarRating;
+    public Rating(int rating) {
+        this.rating = rating;
     }
-    public int getFiveStarRating() {
-        return fiveStarRating;
+    public int getRating() {
+        return rating;
     }
 
-    public void setFiveStarRating(int fiveStarRating) {
-        this.fiveStarRating = fiveStarRating;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     @Override
@@ -27,11 +27,11 @@ public class Rating {
 
         Rating rating = (Rating) o;
 
-        return fiveStarRating == rating.fiveStarRating;
+        return this.rating == rating.rating;
     }
 
     @Override
     public int hashCode() {
-        return fiveStarRating;
+        return rating;
     }
 }
