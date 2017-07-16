@@ -16,7 +16,7 @@ public class ReviewService {
     private String url;
 
     @Autowired
-    public ReviewService(@Value("${producer}") String url) {
+    public ReviewService(@Value("${provider}") String url) {
         this.url = url;
         this.restTemplate = new RestTemplate();
     }

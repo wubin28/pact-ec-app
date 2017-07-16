@@ -1,8 +1,5 @@
 package kata;
 
-/**
- * Created by twer on 7/15/17.
- */
 public class Rating {
     private int rating;
 
