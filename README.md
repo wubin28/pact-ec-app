@@ -7,7 +7,7 @@ The repo "pact-ec-app" demonstrates an e-commerce application which depends on t
 # How to Run It on Mac?
 - At the consumer side
 1. Git clone the ["pact-ec-app"](https://github.com/wubin28/pact-ec-app) repo.
-2. Run the test ReviewServiceContractTest in IntelliJ.
+2. Run command "mvn clean test"
 3. The pact file target/pacts/ec_app-review_service.json will be generated.
 
 - At the provider side
