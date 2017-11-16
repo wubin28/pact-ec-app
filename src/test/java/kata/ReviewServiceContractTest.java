@@ -24,6 +24,7 @@ public class ReviewServiceContractTest {
         return builder.given("The ratings in Review service are ready")
                 .uponReceiving("A request for ratings")
                 .path("/ratings")
+                .query("id=123&name=ben")
                 .method("GET")
                 .willRespondWith()
                 .headers(reqHeader())
@@ -42,7 +43,7 @@ public class ReviewServiceContractTest {
     @Test
     @PactVerification("review_service")
     public void runTest() {
-        ReviewService reviewService = new ReviewService("http://localhost:8080/ratings");
+        ReviewService reviewService = new ReviewService("http://localhost:8080/ratings?id=123&name=ben");
         assertEquals(Arrays.asList(new Rating(3), new Rating(4)),
                 reviewService.getRatings());
     }
