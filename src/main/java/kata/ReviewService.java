@@ -23,6 +23,6 @@ public class ReviewService {
 
     public List<Rating> getRatings() {
         ParameterizedTypeReference<List<Rating>> responseType = new ParameterizedTypeReference<List<Rating>>() {};
-        return restTemplate.exchange(url + "/ratings", HttpMethod.GET, null, responseType).getBody();
+        return restTemplate.exchange(url, HttpMethod.GET, null, responseType).getBody();
     }
 }
