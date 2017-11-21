@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class ReviewServiceContractTest {
+public class ReviewServiceProxyContractTest {
     @Rule
     public PactProviderRuleMk2 rule = new PactProviderRuleMk2("review_service", "localhost", 8080, this);
 
@@ -43,8 +43,8 @@ public class ReviewServiceContractTest {
     @Test
     @PactVerification("review_service")
     public void runTest() {
-        ReviewService reviewService = new ReviewService("http://localhost:8080/ratings?id=123&name=ben");
+        ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?id=123&name=ben");
         assertEquals(Arrays.asList(new Rating(3), new Rating(4)),
-                reviewService.getRatings());
+                reviewServiceProxy.getRatings());
     }
 }
