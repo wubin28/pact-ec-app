@@ -1,19 +1,18 @@
 # The Pact Java Sample
 
-The repo "pact-ec-app" and "pact-ec-review-service" compose the sample project. 
+The repo "pact-ec-app" and "pact-ec-review-service" are the sample code to show how to use the pact-jvm-consumer-junit_2.11 and the pact-jvm-provider-spring-mvc_2.10 correspondingly. 
 
-The repo "pact-ec-app" demonstrates an e-commerce application which depends on the "pact-ec-review-service" microservice. The former requests the latter to provide rating information.
+The repo "pact-ec-app" demonstrates an e-commerce application which depends on the "pact-ec-review-service" restful service. The former (as a consumer) requests the latter (as a provider) to provide rating information (such as a 3-star of a 5-star rating) for a product on the e-commerce website.
 
 # How to Run It on Mac?
 - At the consumer side
-1. Git clone the ["pact-ec-app"](https://github.com/wubin28/pact-ec-app) repo.
+1. Git clone the ["pact-ec-app"](https://github.com/wubin28/pact-ec-app) repo in the consumer folder.
 2. Run command "mvn clean test"
 3. The pact file target/pacts/ec_app-review_service.json will be generated.
 
 - At the provider side
-1. Git clone the ["pact-ec-review-service"](https://github.com/wubin28/pact-ec-review-service) repo.
-2. Make sure the port 8080 is not used by running command "lsof -i:8080". You could use "kill \<pid\>" to terminate a process which is occupying the 8080 port.
-3. Create a folder "pacts" under the project folder and copy the pact file generated in the consumer side to it.
-4. Run command "mvn integration-test"
+1. Git clone the ["pact-ec-review-service"](https://github.com/wubin28/pact-ec-review-service) repo in the provider folder.
+3. Copy the pact file generated in the consumer side above to the folder "src/test/resources" under the project folder.
+4. Run command "mvn clean test"
 
 
