@@ -4,6 +4,7 @@ import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactProviderRuleMk2;
 import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.model.PactSpecVersion;
 import au.com.dius.pact.model.RequestResponsePact;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Rule;
@@ -17,7 +18,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class ReviewServiceProxyContractTest {
     @Rule
-    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("review_service", "localhost", 8080, this);
+    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("review_service", "localhost", 8080, PactSpecVersion.V2, this);
 
     @Pact(provider="review_service", consumer="ec_app")
     public RequestResponsePact createPact(PactDslWithProvider builder) {
