@@ -42,7 +42,7 @@ public class ReviewServiceProxyContractTest {
 
     @Test
     @PactVerification("review_service")
-    public void runTest() {
+    public void should_get_a_list_of_ratings() {
         ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?id=123&name=ben");
         assertEquals(Arrays.asList(new Rating(3), new Rating(4)),
                 reviewServiceProxy.getRatings());
