@@ -3,6 +3,7 @@ package kata;
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactProviderRuleMk2;
 import au.com.dius.pact.consumer.PactVerification;
+import au.com.dius.pact.consumer.dsl.PactDslJsonArray;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.PactSpecVersion;
 import au.com.dius.pact.model.RequestResponsePact;
@@ -23,19 +24,24 @@ public class ReviewServiceProxyContractTest {
     @Pact(provider="review_service", consumer="ec_app")
     public RequestResponsePact createPact(PactDslWithProvider builder) {
         return builder.given("The ratings in Review service are ready")
-                .uponReceiving("A request for ratings")
+                .uponReceiving("A request for ratings for a product")
                 .path("/ratings")
-                .query("id=123&name=ben")
+                .matchQuery("id", "\\d+", "123")
+                .matchQuery("name", "[a-z]+", "ben")
                 .method("GET")
                 .willRespondWith()
-                .headers(reqHeader())
+                .headers(responseHeaders())
                 .status(200)
-                .body("[{\"rating\":3}, {\"rating\":4}]")
+                .body(new PactDslJsonArray().arrayEachLike()
+                        .integerType("id", 123)
+                        .stringMatcher("name", "[a-z]+", "ben")
+                        .integerType("rating", 4)
+                )
                 .toPact();
     }
 
     @NotNull
-    private Map<String, String> reqHeader() {
+    private Map<String, String> responseHeaders() {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json;charset=UTF-8");
         return headers;
@@ -45,7 +51,7 @@ public class ReviewServiceProxyContractTest {
     @PactVerification("review_service")
     public void should_get_a_list_of_ratings() {
         ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?id=123&name=ben");
-        assertEquals(Arrays.asList(new Rating(3), new Rating(4)),
+        assertEquals(Arrays.asList(new Rating(4)),
                 reviewServiceProxy.getRatings());
     }
 }
