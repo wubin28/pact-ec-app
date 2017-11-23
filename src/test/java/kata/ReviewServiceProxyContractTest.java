@@ -54,7 +54,7 @@ public class ReviewServiceProxyContractTest {
     public void should_get_a_list_of_ratings() {
         ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?productId=123&userName=ben");
         final List<Rating> actual = reviewServiceProxy.getRatings();
-        final List<Rating> expected = Arrays.asList(new Rating("123", "ben", 4));
+        final List<Rating> expected = Arrays.asList(new Rating(123, "ben", 4));
         assertThat(actual, is(expected));
     }
 }

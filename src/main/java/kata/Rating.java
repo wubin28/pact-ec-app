@@ -1,24 +1,24 @@
 package kata;
 
 public class Rating {
-    private String productId;
+    private int productId;
     private String userName;
     private int rating;
 
     public Rating() {
     }
 
-    public Rating(String productId, String userName, int rating) {
+    public Rating(int productId, String userName, int rating) {
         this.productId = productId;
         this.userName = userName;
         this.rating = rating;
     }
 
-    public String getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
@@ -45,14 +45,14 @@ public class Rating {
 
         Rating rating1 = (Rating) o;
 
+        if (productId != rating1.productId) return false;
         if (rating != rating1.rating) return false;
-        if (productId != null ? !productId.equals(rating1.productId) : rating1.productId != null) return false;
         return userName != null ? userName.equals(rating1.userName) : rating1.userName == null;
     }
 
     @Override
     public int hashCode() {
-        int result = productId != null ? productId.hashCode() : 0;
+        int result = productId;
         result = 31 * result + (userName != null ? userName.hashCode() : 0);
         result = 31 * result + rating;
         return result;
