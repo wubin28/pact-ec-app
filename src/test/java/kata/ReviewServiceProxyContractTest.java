@@ -13,9 +13,11 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class ReviewServiceProxyContractTest {
     @Rule
@@ -26,15 +28,15 @@ public class ReviewServiceProxyContractTest {
         return builder.given("The ratings in Review service are ready")
                 .uponReceiving("A request for ratings for a product")
                 .path("/ratings")
-                .matchQuery("id", "\\d+", "123")
-                .matchQuery("name", "[a-z]+", "ben")
+                .matchQuery("productId", "\\d+", "123")
+                .matchQuery("userName", "[a-z]+", "ben")
                 .method("GET")
                 .willRespondWith()
                 .headers(responseHeaders())
                 .status(200)
                 .body(new PactDslJsonArray().arrayEachLike()
-                        .integerType("id", 123)
-                        .stringMatcher("name", "[a-z]+", "ben")
+                        .integerType("productId", 123)
+                        .stringMatcher("userName", "[a-z]+", "ben")
                         .integerType("rating", 4)
                 )
                 .toPact();
@@ -50,8 +52,9 @@ public class ReviewServiceProxyContractTest {
     @Test
     @PactVerification("review_service")
     public void should_get_a_list_of_ratings() {
-        ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?id=123&name=ben");
-        assertEquals(Arrays.asList(new Rating(4)),
-                reviewServiceProxy.getRatings());
+        ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?productId=123&userName=ben");
+        final List<Rating> actual = reviewServiceProxy.getRatings();
+        final List<Rating> expected = Arrays.asList(new Rating("123", "ben", 4));
+        assertThat(actual, is(expected));
     }
 }
