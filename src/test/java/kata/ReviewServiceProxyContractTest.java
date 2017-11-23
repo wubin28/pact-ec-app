@@ -11,13 +11,12 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.instanceOf;
 
 public class ReviewServiceProxyContractTest {
     @Rule
@@ -28,16 +27,16 @@ public class ReviewServiceProxyContractTest {
         return builder.given("The ratings in Review service are ready")
                 .uponReceiving("A request for ratings for a product")
                 .path("/ratings")
-                .matchQuery("productId", "\\d+", "123")
-                .matchQuery("userName", "[a-z]+", "ben")
+                .matchQuery("productId", "\\d+")
+                .matchQuery("userName", "[a-z]+")
                 .method("GET")
                 .willRespondWith()
                 .headers(responseHeaders())
                 .status(200)
                 .body(new PactDslJsonArray().arrayEachLike()
-                        .integerType("productId", 123)
+                        .integerType("productId")
                         .stringMatcher("userName", "[a-z]+", "ben")
-                        .integerType("rating", 4)
+                        .integerType("rating")
                 )
                 .toPact();
     }
@@ -54,7 +53,8 @@ public class ReviewServiceProxyContractTest {
     public void should_get_a_list_of_ratings() {
         ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?productId=123&userName=ben");
         final List<Rating> actual = reviewServiceProxy.getRatings();
-        final List<Rating> expected = Arrays.asList(new Rating(123, "ben", 4));
-        assertThat(actual, is(expected));
+        assertThat(actual.get(0).getProductId(), instanceOf(Integer.class));
+        assertThat(actual.get(0).getUserName(), instanceOf(String.class));
+        assertThat(actual.get(0).getRating(), instanceOf(Integer.class));
     }
 }
