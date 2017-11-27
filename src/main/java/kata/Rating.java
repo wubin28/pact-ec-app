@@ -1,24 +1,24 @@
 package kata;
 
 public class Rating {
-    private int productId;
+    private String productId;
     private String userName;
-    private int rating;
+    private String rating;
 
     public Rating() {
     }
 
-    public Rating(int productId, String userName, int rating) {
+    public Rating(String productId, String userName, String rating) {
         this.productId = productId;
         this.userName = userName;
         this.rating = rating;
     }
 
-    public int getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
@@ -30,11 +30,11 @@ public class Rating {
         this.userName = userName;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -45,16 +45,16 @@ public class Rating {
 
         Rating rating1 = (Rating) o;
 
-        if (productId != rating1.productId) return false;
-        if (rating != rating1.rating) return false;
-        return userName != null ? userName.equals(rating1.userName) : rating1.userName == null;
+        if (productId != null ? !productId.equals(rating1.productId) : rating1.productId != null) return false;
+        if (userName != null ? !userName.equals(rating1.userName) : rating1.userName != null) return false;
+        return rating != null ? rating.equals(rating1.rating) : rating1.rating == null;
     }
 
     @Override
     public int hashCode() {
-        int result = productId;
+        int result = productId != null ? productId.hashCode() : 0;
         result = 31 * result + (userName != null ? userName.hashCode() : 0);
-        result = 31 * result + rating;
+        result = 31 * result + (rating != null ? rating.hashCode() : 0);
         return result;
     }
 }

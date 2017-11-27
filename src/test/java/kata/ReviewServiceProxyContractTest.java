@@ -15,8 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 public class ReviewServiceProxyContractTest {
     @Rule
@@ -34,9 +37,9 @@ public class ReviewServiceProxyContractTest {
                 .headers(responseHeaders())
                 .status(200)
                 .body(new PactDslJsonArray().arrayEachLike()
-                        .integerType("productId")
+                        .stringMatcher("productId", "^[0-9][0-9][0-9][0-9][0-9][0-9]$", "123456")
                         .stringMatcher("userName", "[a-z]+", "ben")
-                        .integerType("rating")
+                        .stringMatcher("rating", "^[0-5]$", "5")
                 )
                 .toPact();
     }
@@ -53,8 +56,11 @@ public class ReviewServiceProxyContractTest {
     public void should_get_a_list_of_ratings() {
         ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?productId=123&userName=ben");
         final List<Rating> actual = reviewServiceProxy.getRatings();
-        assertThat(actual.get(0).getProductId(), instanceOf(Integer.class));
+        assertThat(actual.get(0).getProductId(), instanceOf(String.class));
+        assertThat(actual.get(0).getProductId().length(), is(6));
         assertThat(actual.get(0).getUserName(), instanceOf(String.class));
-        assertThat(actual.get(0).getRating(), instanceOf(Integer.class));
+        assertThat(actual.get(0).getRating(), instanceOf(String.class));
+        assertThat(Integer.valueOf(actual.get(0).getRating()), greaterThanOrEqualTo(0));
+        assertThat(Integer.valueOf(actual.get(0).getRating()), lessThanOrEqualTo(5));
     }
 }
