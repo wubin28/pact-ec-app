@@ -23,15 +23,19 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 public class ReviewServiceProxyContractTest {
     @Rule
-    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("review_service", "localhost", 8080, PactSpecVersion.V2, this);
+    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("review_service", "localhost", 8080, PactSpecVersion.V3, this);
 
     @Pact(provider="review_service", consumer="ec_app")
     public RequestResponsePact createPact(PactDslWithProvider builder) {
-        return builder.given("The ratings in Review service are ready")
+        // Pass the parameters to the provider by pact
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", "123");
+        params.put("userName", "ben");
+
+        return builder.given("The ratings in Review service are ready", params)
                 .uponReceiving("A request for ratings for a product")
                 .path("/ratings")
-                .matchQuery("productId", "\\d+")
-                .matchQuery("userName", "[a-z]+")
+                .query("productId=123&userName=ben")
                 .method("GET")
                 .willRespondWith()
                 .headers(responseHeaders())
@@ -55,7 +59,9 @@ public class ReviewServiceProxyContractTest {
     @PactVerification("review_service")
     public void should_get_a_list_of_ratings() {
         ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?productId=123&userName=ben");
+
         final List<Rating> actual = reviewServiceProxy.getRatings();
+
         assertThat(actual.get(0).getProductId(), instanceOf(String.class));
         assertThat(actual.get(0).getProductId().length(), is(6));
         assertThat(actual.get(0).getUserName(), instanceOf(String.class));
