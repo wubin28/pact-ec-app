@@ -29,7 +29,7 @@ public class ReviewServiceProxyContractTest {
     public RequestResponsePact createPact(PactDslWithProvider builder) {
         // Pass the parameters to the provider by pact
         Map<String, Object> params = new HashMap<>();
-        params.put("productId", "123");
+        params.put("productId", "123456");
         params.put("userName", "ben");
 
         return builder.given("The ratings in Review service are ready", params)
