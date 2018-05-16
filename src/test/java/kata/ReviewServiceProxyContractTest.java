@@ -35,7 +35,7 @@ public class ReviewServiceProxyContractTest {
         return builder.given("The ratings in Review service are ready", params)
                 .uponReceiving("A request for ratings for a product")
                 .path("/ratings")
-                .query("productId=123&userName=ben")
+                .query("productId=123456&userName=ben")
                 .method("GET")
                 .willRespondWith()
                 .headers(responseHeaders())
@@ -58,7 +58,7 @@ public class ReviewServiceProxyContractTest {
     @Test
     @PactVerification("review_service")
     public void should_get_a_list_of_ratings() {
-        ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?productId=123&userName=ben");
+        ReviewServiceProxy reviewServiceProxy = new ReviewServiceProxy("http://localhost:8080/ratings?productId=123456&userName=ben");
 
         final List<Rating> actual = reviewServiceProxy.getRatings();
 
