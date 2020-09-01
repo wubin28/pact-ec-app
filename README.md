@@ -1,4 +1,4 @@
-# The Pact JVM Consumer Sample Project 
+# The Consumer Sample Project Using Pact JVM Consumer
 
 The repo "pact-ec-app" demonstrates an e-commerce application 
 which depends on the "pact-ec-review-service" restful service. 
